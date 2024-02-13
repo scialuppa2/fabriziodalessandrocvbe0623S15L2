@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Web;
 
 namespace LoginForm
 {
@@ -8,7 +9,7 @@ namespace LoginForm
         {
             if (!IsPostBack)
             {
-                if (Request.Cookies["Username"] != null)
+                if (Request.Cookies["LOGIN"] != null)
                 {
                     Response.Redirect("Welcome.aspx");
                 }
@@ -17,8 +18,12 @@ namespace LoginForm
 
         protected void BtnLogin_Click(object sender, EventArgs e)
         {
-            Response.Cookies["Username"].Value = txtUsername.Text;
+            HttpCookie mycookie = new HttpCookie("LOGIN");
+            mycookie.Values["username"] = txtUsername.Text;
+            mycookie.Expires = DateTime.Now.AddHours(1);
+            Response.Cookies.Add(mycookie);
             Response.Redirect("Welcome.aspx");
         }
+
     }
 }
